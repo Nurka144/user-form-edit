@@ -1,9 +1,28 @@
 import './App.css';
+import cities from './cities.json'
+import { useState } from 'react'
 
 function App() {
 
+  const [userData, setUserData] = useState({email: '', password: '', newByEmail: false})
+
+  const [checkPassword, setCheckPassword] = useState(false);
+  const [checkEmail, setCheckEmail] = useState(false);
+
+  const [editBtnState, setEditBtnState] = useState(false)
+
+  const cityItem = cities.map(item => item.population > 50000 ? <option value={item.city} key={item.city}>{item.city}</option> : null);
+
+  const changeHandler = (e) => {
+    setUserData({...userData, [e.target.name]: e.target.value});
+  }
+
+  const editBtn = () => {
+    console.log(userData)
+  }
+
   const changeStatus = () => {
-    console.log(1)
+    console.log('Обновить статус')
   }
 
   return (
@@ -28,9 +47,7 @@ function App() {
             </div>
             <div className="col-lg-4 col-md-4 col-sm-12">
               <select className="form-select">
-                <option value="1">Красноярск</option>
-                <option value="2">Красноярск</option>
-                <option value="3">Красноярск</option>
+                {cityItem}
               </select>
             </div>
           </div>
@@ -41,8 +58,10 @@ function App() {
               <span className="title-input">Пароль</span>
             </div>
             <div className="col-lg-4">
-              <input type="text" className="form-control" />
-              <span className="error-input">Укажите пароль</span>
+              <input type="text" className="form-control"  name="password" onChange={changeHandler}/>
+              {
+                checkPassword ? <span className="error-input">Укажите пароль</span> : null
+              }
             </div>
             <div className="col-lg-5">
               <div className="info-input">
@@ -58,7 +77,9 @@ function App() {
             </div>
             <div className="col-lg-4">
               <input type="text" className="form-control" />
-              <span className="error-input">Укажите пароль</span>
+              {
+                checkPassword ? <span className="error-input">Укажите пароль</span> : null
+              }
             </div>
             <div className="col-lg-5">
               <div className="info-input">
@@ -74,8 +95,10 @@ function App() {
               <span className="title-input">Электронная почта</span>
             </div>
             <div className="col-lg-4">
-              <input type="text" className="form-control" />
-              <span className="error-input">Укажите E-mail</span>
+              <input type="text" className="form-control" name="email" onChange={changeHandler}/>
+              {
+                checkEmail ? <span className="error-input">Укажите E-mail</span> : null
+              }
             </div>
             <div className="col-lg-5">
               <div className="info-input">
@@ -91,7 +114,7 @@ function App() {
             </div>
             <div className="col-lg-4">
               <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                <input className="form-check-input" type="checkbox" name="newByEmail" onChange={changeHandler} id="flexCheckDefault" />
                 <label className="form-check-label" htmlFor="flexCheckDefault">
                 принимать актуальную информацию на емейл
                 </label>
@@ -103,10 +126,10 @@ function App() {
           <div className="form-wrapper">
             <div className="offset-lg-3 col-lg-6">
               <div className="form-btn-submit">
-                <button type="button">Изменить</button>
-                <label>
-                последние изменения 15 мая 2012 в 14:55:17
-                </label>
+                <button type="button" onClick={editBtn}>Изменить</button>
+                {
+                  editBtnState ? <label>последние изменения 15 мая 2012 в 14:55:17</label> : null
+                }
               </div>
             </div>
           </div>
